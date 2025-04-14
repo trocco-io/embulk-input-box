@@ -1,16 +1,5 @@
 package org.embulk.input.box;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.embulk.config.ConfigException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.box.sdk.BoxAPIConnection;
 import com.box.sdk.BoxAPIRequest;
 import com.box.sdk.BoxAPIResponse;
@@ -19,6 +8,15 @@ import com.box.sdk.BoxDeveloperEditionAPIConnection;
 import com.box.sdk.BoxFile;
 import com.box.sdk.BoxFolder;
 import com.box.sdk.BoxItem;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import org.embulk.config.ConfigException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BoxClient {
   private final Logger logger = LoggerFactory.getLogger(BoxClient.class);
@@ -67,7 +65,8 @@ public class BoxClient {
     logger.info(String.format("total files %d", list.size()));
 
     if (list.isEmpty() && pluginTask.getStopWhenFileNotFound()) {
-      throw new ConfigException("No file is found. \"stop_when_file_not_found\" option is \"true\".");
+      throw new ConfigException(
+          "No file is found. \"stop_when_file_not_found\" option is \"true\".");
     }
 
     return list;

@@ -1,7 +1,6 @@
 package org.embulk.input.box;
 
 import java.util.Optional;
-
 import org.embulk.util.config.Config;
 import org.embulk.util.config.ConfigDefault;
 import org.embulk.util.config.Task;
