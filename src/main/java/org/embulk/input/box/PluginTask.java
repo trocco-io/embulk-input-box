@@ -1,6 +1,7 @@
 package org.embulk.input.box;
 
 import java.util.Optional;
+
 import org.embulk.util.config.Config;
 import org.embulk.util.config.ConfigDefault;
 import org.embulk.util.config.Task;
@@ -24,4 +25,8 @@ public interface PluginTask extends Task {
   @Config("file_prefix")
   @ConfigDefault("null")
   Optional<String> getFilePrefix();
+
+  @Config("stop_when_file_not_found")
+  @ConfigDefault("false")
+  boolean getStopWhenFileNotFound();
 }
