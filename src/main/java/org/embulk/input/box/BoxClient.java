@@ -63,6 +63,12 @@ public class BoxClient {
       }
     }
     logger.info(String.format("total files %d", list.size()));
+
+    if (list.isEmpty() && pluginTask.getStopWhenFileNotFound()) {
+      throw new ConfigException(
+          "No file is found. \"stop_when_file_not_found\" option is \"true\".");
+    }
+
     return list;
   }
 

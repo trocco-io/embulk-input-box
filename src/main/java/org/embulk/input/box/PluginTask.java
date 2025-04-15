@@ -24,4 +24,8 @@ public interface PluginTask extends Task {
   @Config("file_prefix")
   @ConfigDefault("null")
   Optional<String> getFilePrefix();
+
+  @Config("stop_when_file_not_found")
+  @ConfigDefault("false")
+  boolean getStopWhenFileNotFound();
 }
