@@ -47,8 +47,9 @@ public class BoxClient {
     BoxFolder folder = new BoxFolder(client, pluginTask.getFolderId());
     logger.info(
         String.format(
-            "%s %b %b",
-            folder.getID(), folder.iterator().hasNext(), pluginTask.getFilePrefix().isPresent()));
+            "folder ID: %s, hasNext: %b, filePrefix: %b, file count: %d",
+            folder.getID(), folder.iterator().hasNext(), pluginTask.getFilePrefix().isPresent(),
+                folder.getChildrenRange(0, 1).fullSize()));
 
     List<BoxFile.Info> list = new ArrayList<>();
 
