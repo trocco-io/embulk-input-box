@@ -35,6 +35,8 @@ dependencies {
     compile "org.embulk:embulk-util-config:0.3.2"
     compile "com.fasterxml.jackson.core:jackson-databind:2.6.7"
 
+    // box-java-sdk is shaded to avoid Jackson version conflict on embulk 0.9.x
+    // See shadow-box-java-sdk/build.gradle for details
     compile project(path: ":shadow-box-java-sdk", configuration: "shadow")
 
     runtimeOnly 'com.squareup.okhttp3:okhttp:4.12.0'

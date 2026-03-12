@@ -1,3 +1,15 @@
+// This subproject exists to work around a Jackson version conflict on embulk 0.9.x.
+// embulk 0.9.x bundles Jackson 2.6.7, but box-java-sdk 5.x depends on Jackson 2.18.2.
+// Because the embulk 0.9.x classloader loads its own Jackson first, the newer version
+// is never used, causing NoSuchMethodError at runtime.
+//
+// To avoid this, we shade (relocate) Jackson packages inside box-java-sdk so they
+// don't collide with the version bundled in embulk.
+// See: https://github.com/trocco-io/embulk-input-kintone (same pattern)
+//
+// This workaround can be removed once the runtime is upgraded to embulk 0.10+,
+// which provides classloader isolation per plugin.
+
 plugins {
     id "java"
     id "com.github.johnrengelman.shadow"
