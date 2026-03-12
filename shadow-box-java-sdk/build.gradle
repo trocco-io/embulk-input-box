@@ -1,0 +1,51 @@
+plugins {
+    id "java"
+    id "com.github.johnrengelman.shadow"
+}
+
+repositories {
+    mavenCentral()
+}
+
+group = "${rootProject.group}"
+version = "${rootProject.version}"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+    runtimeClasspath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+    shadow {
+        resolutionStrategy.activateDependencyLocking()
+        transitive = false
+    }
+    all {
+        resolutionStrategy {
+            force 'com.fasterxml.jackson.core:jackson-databind:2.6.7'
+            force 'com.fasterxml.jackson.core:jackson-core:2.6.7'
+            force 'com.fasterxml.jackson.core:jackson-annotations:2.6.7'
+            force 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.7'
+        }
+    }
+}
+
+dependencies {
+    compile('com.box:box-java-sdk:5.4.0') {
+        exclude group: 'org.bouncycastle'
+        exclude group: 'com.squareup.okhttp3'
+        exclude group: 'com.squareup.okio'
+        exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'org.jetbrains'
+        exclude group: 'com.fasterxml.jackson'
+    }
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.7'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.6.7'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.7'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.7'
+}
+
+shadowJar {
+    relocate 'com.fasterxml.jackson', 'embulk.box.com.fasterxml.jackson'
+}
