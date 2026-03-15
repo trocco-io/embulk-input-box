@@ -1,0 +1,63 @@
+// This subproject exists to work around a Jackson version conflict on embulk 0.9.x.
+// embulk 0.9.x bundles Jackson 2.6.7, but box-java-sdk 5.x depends on Jackson 2.18.2.
+// Because the embulk 0.9.x classloader loads its own Jackson first, the newer version
+// is never used, causing NoSuchMethodError at runtime.
+//
+// To avoid this, we shade (relocate) Jackson packages inside box-java-sdk so they
+// don't collide with the version bundled in embulk.
+// See: https://github.com/trocco-io/embulk-input-kintone (same pattern)
+//
+// This workaround can be removed once the runtime is upgraded to embulk 0.10+,
+// which provides classloader isolation per plugin.
+
+plugins {
+    id "java"
+    id "com.github.johnrengelman.shadow"
+}
+
+repositories {
+    mavenCentral()
+}
+
+group = "${rootProject.group}"
+version = "${rootProject.version}"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+    runtimeClasspath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+    shadow {
+        resolutionStrategy.activateDependencyLocking()
+        transitive = false
+    }
+    all {
+        resolutionStrategy {
+            force 'com.fasterxml.jackson.core:jackson-databind:2.6.7'
+            force 'com.fasterxml.jackson.core:jackson-core:2.6.7'
+            force 'com.fasterxml.jackson.core:jackson-annotations:2.6.7'
+            force 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.7'
+        }
+    }
+}
+
+dependencies {
+    compile('com.box:box-java-sdk:5.4.0') {
+        exclude group: 'org.bouncycastle'
+        exclude group: 'com.squareup.okhttp3'
+        exclude group: 'com.squareup.okio'
+        exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'org.jetbrains'
+        exclude group: 'com.fasterxml.jackson'
+    }
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.7'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.6.7'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.7'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.7'
+}
+
+shadowJar {
+    relocate 'com.fasterxml.jackson', 'embulk.box.com.fasterxml.jackson'
+}
