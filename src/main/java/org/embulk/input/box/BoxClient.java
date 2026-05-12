@@ -36,6 +36,7 @@ public class BoxClient {
       } else {
         throw new ConfigException("auth_method: " + authMethod + " is not allowd");
       }
+      client.setMaxRetryAttempts(pluginTask.getMaximumRetries());
       this.pluginTask = pluginTask;
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
