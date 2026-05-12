@@ -28,4 +28,8 @@ public interface PluginTask extends Task {
   @Config("stop_when_file_not_found")
   @ConfigDefault("false")
   boolean getStopWhenFileNotFound();
+
+  @Config("maximum_retries")
+  @ConfigDefault("3")
+  int getMaximumRetries();
 }
